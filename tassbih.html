@@ -1,113 +1,102 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ar" dir="rtl">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Tasbih</title>
+    <title>المسبحة</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link rel="icon" href="praying.png" type="image/x-icon" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Amiri:ital@0;1&family=Urbanist:ital,wght@0,600;1,600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
     <style>
+      /* Small page-specific adjustments that keep global style from style.css */
       body {
-        font-family: Arial, sans-serif;
-        background: linear-gradient(135deg, #d2e9e9, #e3f4f4);
+        min-height: 100vh;
         display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-        margin: 0;
-        direction: rtl;
+        flex-direction: column;
       }
 
-      .tasbih-container {
-        text-align: center;
-        background-color: #f8f6f4;
-        padding: 30px;
-        border-radius: 15px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-        max-width: 400px;
-        width: 90%;
+      .tasbih-wrapper {
+        max-width: 600px;
+        margin: 120px auto 40px; /* leave space for fixed nav */
+        padding: 1rem;
       }
 
       #clickable-area {
         width: 100%;
-        height: 200px;
-        background-color: #e9ecef;
+        min-height: 180px;
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 24px;
+        background-color: var(--card-bg, #f8f6f4);
+        border: 2px solid rgba(0, 0, 0, 0.06);
+        border-radius: 12px;
         cursor: pointer;
-        border-radius: 8px;
-        margin-bottom: 20px;
-        border: 2px solid #dee2e6;
-        transition: background-color 0.3s;
+        transition: transform 0.12s ease, background-color 0.12s ease;
       }
 
-      #clickable-area:hover {
-        background-color: #d8dce0;
+      #clickable-area:active {
+        transform: scale(0.997);
+      }
+
+      #phrase-display {
+        font-size: 1.6rem;
+        margin: 0;
+        font-family: "Amiri", serif;
       }
 
       #count-display {
-        font-size: 18px;
-        margin-bottom: 10px;
-        color: #333;
+        font-size: 1.1rem;
+        margin-top: 0.75rem;
+        text-align: center;
       }
 
       .controls {
         display: flex;
-        justify-content: space-between;
-        gap: 10px;
+        gap: 0.6rem;
+        margin-top: 1rem;
       }
 
-      button {
-        flex: 1;
-        padding: 10px;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        font-size: 16px;
-        transition: background-color 0.3s;
-      }
-
-      #reset-btn {
-        background-color: #dc3545;
-        color: white;
-      }
-
-      #reset-btn:hover {
-        background-color: #c82333;
-      }
-
-      #done-btn {
-        background-color: #28a745;
-        color: white;
-      }
-
-      #done-btn:hover {
-        background-color: #218838;
-      }
-
-      @media (max-width: 480px) {
+      @media (max-width: 576px) {
         #clickable-area {
-          height: 150px;
-          font-size: 20px;
+          min-height: 140px;
         }
 
-        button {
-          font-size: 14px;
-          padding: 8px;
+        #phrase-display {
+          font-size: 1.3rem;
         }
       }
     </style>
   </head>
+
   <body>
-    <div class="tasbih-container">
-      <div id="clickable-area">
-        <h1 id="phrase-display">سبحان الله</h1>
-      </div>
-      <div id="count-display">العدد: <span id="count">0</span></div>
-      <div class="controls">
-        <a href="index.html"><button class="btn prayer-time"><-</button></a>
-        <button id="reset-btn">إعادة تعيين</button>
-        <button id="done-btn">إنهاء</button>
+    <div class="tasbih-wrapper container">
+      <div class="card supplication-card p-3">
+        <h1 class="section-title text-center mb-3">المسبحة</h1>
+
+        <div id="clickable-area" role="button" tabindex="0">
+          <h2 id="phrase-display">سبحان الله</h2>
+        </div>
+
+        <div id="count-display"><span id="count">0</span></div>
+
+        <div class="controls mt-3">
+          <a href="index.html" class="btn btn-outline-primary flex-fill"
+            >الرجوع</a
+          >
+          <button id="reset-btn" class="btn btn-danger flex-fill">
+            إعادة تعيين
+          </button>
+          <button id="done-btn" class="btn btn-success flex-fill">إنهاء</button>
+        </div>
       </div>
     </div>
 
@@ -116,23 +105,27 @@
       const phrases = ["سبحان الله", "الحمد لله", "الله أكبر"];
       const specialPhrase =
         "لا إله إلا الله وحده لا شريك له، له الملك وله الحمد وهو على كل شيء قدير";
+
       const clickableArea = document.getElementById("clickable-area");
       const resetBtn = document.getElementById("reset-btn");
       const countDisplay = document.getElementById("count");
       const phraseDisplay = document.getElementById("phrase-display");
 
-      // Increment the count and display phrase on each click
-      clickableArea.addEventListener("click", () => {
+      // Increment the count and display phrase on each click or key press (Enter/Space)
+      function incrementCounter() {
         count++;
         countDisplay.textContent = count;
 
-        // Show the special phrase every 100 clicks
         if (count % 100 === 0) {
           phraseDisplay.textContent = specialPhrase;
         } else {
-          // Cycle through phrases when not at a multiple of 100
           phraseDisplay.textContent = phrases[(count - 1) % phrases.length];
         }
+      }
+
+      clickableArea.addEventListener("click", incrementCounter);
+      clickableArea.addEventListener("keydown", (e) => {
+        if (e.key === "Enter" || e.key === " ") incrementCounter();
       });
 
       // Reset the counter
@@ -145,8 +138,9 @@
       // Done button - you can customize this action
       document.getElementById("done-btn").addEventListener("click", () => {
         alert(`تم إنهاء التسبيح بعد ${count} تسبيحة`);
-        // You can redirect or perform other actions here
       });
     </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
   </body>
 </html>
