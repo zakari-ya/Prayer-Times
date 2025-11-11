@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tasbih</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background: linear-gradient(135deg, #d2e9e9, #e3f4f4);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+        direction: rtl;
+      }
+
+      .tasbih-container {
+        text-align: center;
+        background-color: #f8f6f4;
+        padding: 30px;
+        border-radius: 15px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        max-width: 400px;
+        width: 90%;
+      }
+
+      #clickable-area {
+        width: 100%;
+        height: 200px;
+        background-color: #e9ecef;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 24px;
+        cursor: pointer;
+        border-radius: 8px;
+        margin-bottom: 20px;
+        border: 2px solid #dee2e6;
+        transition: background-color 0.3s;
+      }
+
+      #clickable-area:hover {
+        background-color: #d8dce0;
+      }
+
+      #count-display {
+        font-size: 18px;
+        margin-bottom: 10px;
+        color: #333;
+      }
+
+      .controls {
+        display: flex;
+        justify-content: space-between;
+        gap: 10px;
+      }
+
+      button {
+        flex: 1;
+        padding: 10px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+        transition: background-color 0.3s;
+      }
+
+      #reset-btn {
+        background-color: #dc3545;
+        color: white;
+      }
+
+      #reset-btn:hover {
+        background-color: #c82333;
+      }
+
+      #done-btn {
+        background-color: #28a745;
+        color: white;
+      }
+
+      #done-btn:hover {
+        background-color: #218838;
+      }
+
+      @media (max-width: 480px) {
+        #clickable-area {
+          height: 150px;
+          font-size: 20px;
+        }
+
+        button {
+          font-size: 14px;
+          padding: 8px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="tasbih-container">
+      <div id="clickable-area">
+        <h1 id="phrase-display">سبحان الله</h1>
+      </div>
+      <div id="count-display">العدد: <span id="count">0</span></div>
+      <div class="controls">
+        <a href="index.html"><button class="btn prayer-time"><-</button></a>
+        <button id="reset-btn">إعادة تعيين</button>
+        <button id="done-btn">إنهاء</button>
+      </div>
+    </div>
+
+    <script>
+      let count = 0;
+      const phrases = ["سبحان الله", "الحمد لله", "الله أكبر"];
+      const specialPhrase =
+        "لا إله إلا الله وحده لا شريك له، له الملك وله الحمد وهو على كل شيء قدير";
+      const clickableArea = document.getElementById("clickable-area");
+      const resetBtn = document.getElementById("reset-btn");
+      const countDisplay = document.getElementById("count");
+      const phraseDisplay = document.getElementById("phrase-display");
+
+      // Increment the count and display phrase on each click
+      clickableArea.addEventListener("click", () => {
+        count++;
+        countDisplay.textContent = count;
+
+        // Show the special phrase every 100 clicks
+        if (count % 100 === 0) {
+          phraseDisplay.textContent = specialPhrase;
+        } else {
+          // Cycle through phrases when not at a multiple of 100
+          phraseDisplay.textContent = phrases[(count - 1) % phrases.length];
+        }
+      });
+
+      // Reset the counter
+      resetBtn.addEventListener("click", () => {
+        count = 0;
+        countDisplay.textContent = count;
+        phraseDisplay.textContent = phrases[0];
+      });
+
+      // Done button - you can customize this action
+      document.getElementById("done-btn").addEventListener("click", () => {
+        alert(`تم إنهاء التسبيح بعد ${count} تسبيحة`);
+        // You can redirect or perform other actions here
+      });
+    </script>
+  </body>
+</html>
